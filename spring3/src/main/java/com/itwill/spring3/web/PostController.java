@@ -20,8 +20,16 @@ public class PostController {
 		return "/post/read";
 	}
 	
+	@GetMapping
+	public String read() {
+		
+		return "/post/read";
+	}
+	
 	@GetMapping("/create")
 	public void create() {
 		log.info("create() GET");
 	}
+	
+	
 }

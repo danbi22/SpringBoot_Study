@@ -29,6 +29,8 @@ public class BaseTimeEntity {
 	
 	@CreatedDate // insert될 때의 시간이 자동으로 기록됨.
 	private LocalDateTime createdTime;
+	//-> 엔티티 클래스의 필드 이름은 자바의 관습(camel 표기법)으로 작성
+	//-> 테이블의 컬럼 이름은 데이터베이스의 관습(snake 표기법)을 따름
 	
 	@LastModifiedDate // update될 때의 시간이 자동으로 기록됨
 	private LocalDateTime modifiedTime;

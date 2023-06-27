@@ -1,8 +1,9 @@
 package com.itwill.spring3.repository.post;
 
+import com.itwill.spring3.dto.PostUpdateDto;
 import com.itwill.spring3.repository.BaseTimeEntity;
 
-import groovy.transform.builder.Builder;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -38,5 +40,12 @@ public class Post extends BaseTimeEntity {
 	@Column(nullable = false)
 	private String author;
 	
+	// Post 엔터티의 title과 content를 수정해서 리턴하는 메서드:
+	public Post update(PostUpdateDto dto) {
+		this.title = dto.getTitle();
+		this.content = dto.getContent();
+		
+		return this;
+	}
 	
 }
