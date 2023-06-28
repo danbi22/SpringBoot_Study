@@ -1,5 +1,6 @@
 package com.itwill.spring3.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -37,6 +38,7 @@ public class PostController {
 		
 		model.addAttribute("pages", pages);
 		model.addAttribute("posts", list);
+		model.addAttribute("page_num", page_num);
 		
 		return "/post/read";
 	}
@@ -89,10 +91,26 @@ public class PostController {
 	}
 	
 	@GetMapping("/search")
-	public String search(PostSearchDto dto) {
+	public String search(PostSearchDto dto, Model model) {
 		log.info("search(dto={})", dto);
 		
-		List<Post> list = postService.search(dto);
+		List<Post> list = new ArrayList<>();
+		
+		switch(dto.getType()) {
+			case "t":
+				list = postService.searchByTitle(dto.getKeyword());
+				break;
+			case "c":
+				list = postService.searchByContent(dto.getKeyword());
+				break;
+			case "a":
+				list = postService.searchByAuthor(dto.getKeyword());
+				break;
+			case "tc":
+				list = postService.searchByTitleAndContent2(dto.getKeyword());
+		}
+		
+		model.addAttribute("posts", list);
 		
 		return "/post/read";
 	}

@@ -89,15 +89,16 @@ public class PostService {
 		} else if ((page_num *10) - list.size() >= 10) {
 			page_num--;
 		}
-		
+		log.info("========================={}", page_num);
 		int page_num2 = (page_num - 1) * 10;
 		
 		List<Post> page = new ArrayList<>();
 		
 		int pages = 10;
 		
-		if ((page_num2 - list.size()) < 10) {
-			pages = page_num2 - list.size();
+		if (list.size()-page_num2 < 10 && list.size()-page_num2 != 0) {
+			log.info("==========================================");
+			pages = list.size() % 10;
 		}
 		
 		for (int i = page_num2; i < page_num2 + pages; i++) {
@@ -125,10 +126,26 @@ public class PostService {
 		
 		return pages;
 	}
-
-	public List<Post> search(PostSearchDto dto) {
-		
-//		postRepository.find
-		return null; 
+	@Transactional(readOnly = true)
+	public List<Post> searchByTitle(String keyword) {
+		return postRepository.findByTitleContainsIgnoreCaseOrderByIdDesc(keyword);
 	}
+
+	public List<Post> searchByContent(String keyword) {
+		return postRepository.findByContentContainsIgnoreCaseOrderByIdDesc(keyword);
+	}
+
+	public List<Post> searchByAuthor(String keyword) {
+		return postRepository.findByAuthorContainsIgnoreCaseOrderByIdDesc(keyword);
+	}
+
+	public List<Post> searchByTitleAndContent(String keyword) {
+		return postRepository.findByTitleContainsIgnoreCaseOrContentContainsIgnoreCaseOrderByIdDesc(keyword, keyword);
+	}
+
+	public List<Post> searchByTitleAndContent2(String keyword) {
+		return postRepository.searchByKeyword(keyword);
+	}
+	
+	
 }
