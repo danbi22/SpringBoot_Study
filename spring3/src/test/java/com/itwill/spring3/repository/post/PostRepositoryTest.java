@@ -29,7 +29,7 @@ public class PostRepositoryTest {
 		}
 	}
 	
-	//@Test
+	@Test
 	public void testSave() {
 		// DB 테이블에 insert할 레코드(엔터티)를 생성:
 		Post entity = Post.builder()
@@ -41,15 +41,14 @@ public class PostRepositoryTest {
 		log.info("created: {}, modified: {}", entity.getCreatedTime(), entity.getModifiedTime());
 		
 		// DB 테이블에 insert:
-		postRepository.save(entity);
+			postRepository.saveAndFlush(entity);
 		//-> save 메서드는 테이블에 삽입할 엔터티를 파라미터에 전달하면, 
 		//-> 테이블에 저장된 엔터티 객체를 리턴.
 		//-> 파라미터에 전달된 엔터티 필드를 변경해서 리턴
 		// 열시퀀스 값을 다시 찾아 올 수 있음.
 		
-		log.info("insert 후: {}", entity);
-		log.info("created: {}, modified: {}", entity.getCreatedTime(), entity.getModifiedTime());
-		assertNotNull(entity);
+		log.info("insert 후: {}", entity); log.info("created: {}, modified: {}",
+		entity.getCreatedTime(), entity.getModifiedTime()); assertNotNull(entity);
 	}
 	
 	//@Test
@@ -74,7 +73,7 @@ public class PostRepositoryTest {
 		log.info(entity.toString());
 	}
 	
-	@Test
+	//@Test
 	public void delete() {
 		long count = postRepository.count(); // DB 테이블의 행의 개수(엔터티 개수)
 		log.info("삭제 전 count: {}", count);
@@ -84,4 +83,6 @@ public class PostRepositoryTest {
 		count = postRepository.count(); // DB 테이블의 행의 개수(엔터티 개수)
 		log.info("삭제 후 count: {}", count);
 	}
+	
+	
 }
