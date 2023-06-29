@@ -14,7 +14,10 @@ import com.itwill.spring3.dto.PostCreateDto;
 import com.itwill.spring3.dto.PostSearchDto;
 import com.itwill.spring3.dto.PostUpdateDto;
 import com.itwill.spring3.repository.post.Post;
+import com.itwill.spring3.repository.reply.Reply;
+import com.itwill.spring3.repository.reply.ReplyRepository;
 import com.itwill.spring3.service.PostService;
+import com.itwill.spring3.service.ReplyService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,10 +29,19 @@ import lombok.extern.slf4j.Slf4j;
 public class PostController {
 	
 	private final PostService postService;
+	private final ReplyService replyService;
 	
 	@GetMapping
 	public String read(Model model, int page_num) {
 		log.info("read()");
+		
+		long page = postService.count();
+		
+		if (page_num <= 0) {
+			page_num = 1;
+		} else if ((page_num *10) - page >= 10) {
+			page_num--;
+		}
 		
 		List<Post> list = postService.readAPage(page_num);
 		
@@ -65,12 +77,20 @@ public class PostController {
 		// POSTS 테이블에서 id에 해당하는 포스트를 검색. 
 		Post post = postService.read(id);
 		
-		// model에 post 넣어주기
+		// post에 해당하는 댓글을 검색
+		List<Reply> list = replyService.read(post);
+		
+		// 댓글 개수를 저장
+		int repliesCount = list.size();
+		
+		// model에 post, 댓글 목록, 댓글 개수 넣어주기
 		model.addAttribute("post", post);
+		model.addAttribute("replies", list);
+		model.addAttribute("repliesCount", repliesCount);
 		
 		// 컨트롤러 메서드의 리턴값이 없는 경우(void인 경우)
 		// 뷰의 이름은 요청 주소와 같다!
-		// 
+		// detail
 	}
 	
 	@PostMapping("/update")

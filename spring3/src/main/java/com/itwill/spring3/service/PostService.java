@@ -89,7 +89,6 @@ public class PostService {
 		} else if ((page_num *10) - list.size() >= 10) {
 			page_num--;
 		}
-		log.info("========================={}", page_num);
 		int page_num2 = (page_num - 1) * 10;
 		
 		List<Post> page = new ArrayList<>();
@@ -97,7 +96,6 @@ public class PostService {
 		int pages = 10;
 		
 		if (list.size()-page_num2 < 10 && list.size()-page_num2 != 0) {
-			log.info("==========================================");
 			pages = list.size() % 10;
 		}
 		
@@ -146,6 +144,11 @@ public class PostService {
 	public List<Post> searchByTitleAndContent2(String keyword) {
 		return postRepository.searchByKeyword(keyword);
 	}
+
+	public long count() {
+		return postRepository.count();
+	}
+	
 	
 	
 }
