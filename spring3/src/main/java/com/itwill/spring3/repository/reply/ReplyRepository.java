@@ -23,9 +23,13 @@ public interface ReplyRepository extends JpaRepository<Reply, Long>{
 	
 	List<Reply> findByPostId(Long postId);
 	
-//	@Query(
-//		"insert into replies (postId, replyText, writer, createdTime, modifiedTime) "
-//		+ "values ("
-//	)
+	@Query(
+		"update Reply r "
+		+ "set r.replyText = :replyText "
+		+ "where r.id = :id"
+
+	)
+	void updateReply(@Param("replyText") String replyText, @Param("id") Long id);
+	
 	
 }

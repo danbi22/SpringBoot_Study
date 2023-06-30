@@ -35,13 +35,13 @@ document.addEventListener('DOMContentLoaded', () => {
 		let htmlStr = '';
 		for (let reply of data) {
 			htmlStr += `
-            <div class="replyArea card my-2" data-id="${reply.id}">
+            <div class="replyArea-${reply.id} card my-2">
                 <div>
                     <span class="d-none">${reply.id}</span>
                     <span class="fw-bold">${reply.writer}</span>
                 </div>
                 <div>
-                    ${reply.replyText}
+                    <textarea id="replyText_${reply.id}" >${reply.replyText}</textarea>
                 </div>
                 <div>
                     <button class="btnDelete btn btn-outline-danger" data-id="${reply.id}">삭제</button>
@@ -61,13 +61,35 @@ document.addEventListener('DOMContentLoaded', () => {
 				if (result == false) {
 					return;
 				}
-				const id = btn.getAttribute('data-id');
+				const id = btnDelete.getAttribute('data-id');
+				console.log(id);
 				const reqUrl = `/api/reply/${id}`
 				
 				axios
 					.delete(reqUrl)
 					.then((response) => {
-						
+						document.querySelector(`div.replyArea-${id}`).remove();
+						let replyCount = document.querySelector('span#replyCount');
+						replyCount.innerText = Number(replyCount.innerText)-1;
+					})
+					.catch((error) => console.log(error));
+			});
+		});
+		
+		// 댓글 수정하기
+		const btnModifys = document.querySelectorAll('button.btnModify');
+		btnModifys.forEach((btnModify) => {
+			btnModify.addEventListener('click', () => {
+				console.log('하이')
+				const id = btnModify.getAttribute('data-id');
+				const replyText = document.querySelector(`textarea#replyText_${id}`).value;
+				const reqUrl = `/api/reply/${id}`
+				const data = {replyText}
+				axios
+					.put(reqUrl, data)
+					.then((response) => {
+						console.log('data='+response.data);
+						replyText = response.data;
 					})
 					.catch((error) => console.log(error));
 			});

@@ -3,6 +3,7 @@ package com.itwill.spring3.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,11 +56,14 @@ public class PostController {
 		return "/post/read";
 	}
 	
+	// Spring-EL = ''
+	@PreAuthorize("hasRole('USER')") // 페이지 접근 이전에 인증(권한, 로그임) 여부를 확인
 	@GetMapping("/create")
 	public void create() {
 		log.info("create() GET");
 	}
 	
+	@PreAuthorize("hasRole('USER')")
 	@PostMapping("/create")
 	public String postCreate(PostCreateDto dto) {
 		log.info("postCreate(post: {})", dto);
@@ -70,6 +74,7 @@ public class PostController {
 	}
 	
 	// "/post/datails", "/post/modify" 요청 주소들을 처리하는 컨트롤러 메서드.
+	@PreAuthorize("hasRole('USER')")
 	@GetMapping({"/details", "/modify"}) // 요청이 들어온 주소의 이름으로 view를 찾는다.
 	public void read(Long id, Model model) {
 		log.info("read(id={})", id);
@@ -93,6 +98,7 @@ public class PostController {
 		// detail
 	}
 	
+	@PreAuthorize("hasRole('USER')")
 	@PostMapping("/update")
 	public String update(PostUpdateDto dto, Model model) {
 		log.info("update(dto={})", dto);
@@ -101,6 +107,7 @@ public class PostController {
 		return "redirect:/post/details?id="+dto.getId();
 	}
 	
+	@PreAuthorize("hasRole('USER')")
 	@PostMapping("/delete")
 	public String delete(Long id) {
 		log.info("delete(id={})", id);
