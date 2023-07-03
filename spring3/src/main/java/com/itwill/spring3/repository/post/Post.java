@@ -3,7 +3,6 @@ package com.itwill.spring3.repository.post;
 import com.itwill.spring3.dto.PostUpdateDto;
 import com.itwill.spring3.repository.BaseTimeEntity;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,7 +14,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 @NoArgsConstructor

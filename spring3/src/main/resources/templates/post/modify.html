@@ -43,7 +43,7 @@
                             readonly />
                     </div>
                 </form>
-                <div class="my-2">
+                <div class="my-2" th:if="${ #authentication.name } == ${ post.author }">
                 	<button class="btn btn-outline-danger" id="btnDelete">삭제</button>
                 	<button class="btn btn-outline-primary" id="btnUpdate">업데이트</button>
                 </div>
